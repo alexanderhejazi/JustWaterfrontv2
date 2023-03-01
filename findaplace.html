@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Find a Place</title>
+	<style type="text/css">
+		body {
+			margin: 0;
+			padding: 0;
+			background-image: url(background.jpg);
+			background-repeat: no-repeat;
+			background-size: cover;
+			font-family: Arial, sans-serif;
+			color: #fff;
+			font-size: 18px;
+			line-height: 1.5;
+		}
+
+		.container {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+		}
+
+		.btn {
+			display: inline-block;
+			padding: 20px 40px;
+			border-radius: 5px;
+			background-color: rgba(0, 0, 0, 0.5);
+			color: #fff;
+			font-size: 24px;
+			text-align: center;
+			margin: 20px;
+			cursor: pointer;
+			transition: all 0.3s ease-in-out;
+		}
+
+		.btn:hover {
+			box-shadow: 0 0 10px rgba(255, 255, 255, 1);
+		}
+
+		.step {
+			display: none;
+			width: 100%;
+			height: 100vh;
+			position: absolute;
+			top: 0;
+			left: 0;
+			background-color: rgba(0, 0, 0, 0.5);
+			padding: 20px;
+			box-sizing: border-box;
+			text-align: center;
+		}
+
+		.step label, .step input[type="button"] {
+			display: block;
+			margin: 20px 0;
+		}
+
+		.step input[type="number"], .step input[type="text"] {
+			padding: 10px;
+			border-radius: 5px;
+			border: none;
+			width: 50%;
+			font-size: 18px;
+			background-color: #fff;
+		}
+
+		.step input[type="button"] {
+			padding: 10px 20px;
+			background-color: #d3d3d3;
+			color: #000;
+			font-size: 18px;
+			cursor: pointer;
+			transition: all 0.3s ease-in-out;
+		}
+
+		.step input[type="button"]:hover {
+			background-color: #fff;
+			color: #000;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div id="step1" class="step" style="display: block;">
+			<label>Are you looking to buy or rent?</label>
+			<input type="button" value="Buy" onclick="nextStep(2, 'buy')">
+			<input type="button" value="Rent" onclick="nextStep(2, 'rent')">
+		</div>
+
+		<form action="listings.php" method="GET" class="step" id="step2">
+			<div>
+				<label>How many bedrooms?</label>
+				<input type="number" name="bedrooms" min="0" id="bedrooms">
+				<input type="button" value="Previous" onclick="prevStep(1)">
+				<input type="button" value="Next" onclick="nextStep(3)">
+			</div>
+		</form>
+
+		<form action="listings.php" method="GET" class="step" id="step4">
+            <div>
+            <label>How many bathrooms?</label>
+            <input type="number" name="bathrooms" min="0" id="bathrooms">
+            <input type="button" value="Previous" onclick="prevStep(3)">
+            <input type="button" value="Next" onclick="nextStep(5)">
+            </div>
+            </form>
+            <form action="listings.php" method="GET" class="step" id="step5">
+                <div>
+                    <label>Square feet:</label>
+                    <input type="number" name="square_feet" min="0" id="square_feet">
+                    <input type="button" value="Previous" onclick="prevStep(4)">
+                    <input type="button" value="Next" onclick="nextStep(6)">
+                </div>
+            </form>
+        
+            <form action="listings.php" method="GET" class="step" id="step6">
+                <div>
+                    <label>Price:</label>
+                    <input type="number" name="price" min="0" id="price">
+                    <input type="button" value="Previous" onclick="prevStep(5)">
+                    <input type="button" value="Next" onclick="nextStep(7)">
+                </div>
+            </form>
+        
+            <form action="listings.php" method="GET" class="step" id="step7">
+                <div>
+                    <label>Upload Images:</label>
+                    <input type="file" name="images[]" multiple accept="image/*">
+                    <input type="button" value="Previous" onclick="prevStep(6)">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        
+        </div>
+        
+        <script>
+            var currentStep = 1;
+            var formSteps = document.querySelectorAll(".step");
+        
+            function nextStep(step) {
+                formSteps[currentStep - 1].style.display = "none";
+                formSteps[step - 1].style.display = "block";
+                currentStep = step;
+            }
+        
+            function prevStep(step) {
+                formSteps[currentStep - 1].style.display = "none";
+                formSteps[step - 1].style.display = "block";
+                currentStep = step;
+            }
+        </script>
+</body>
+</html>        

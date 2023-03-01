@@ -1,0 +1,140 @@
+please build the page they'll land on when they say they want to list. This page will begin by asking whether its a rental or a sale. When they choose, it will then ask how many bedrooms, then how many bathrooms, then how many square feet, then price, and then any images they want to upload. Once they've gone through those pages, I want them to be directed to a checkout where they pay to post this listing. We will be using paypal for this checkout. 
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>List Your Place</title>
+	<style>
+		body {
+			background-image: url("placeholderlink");
+			background-size: cover;
+			background-position: center;
+			height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			font-family: Arial, sans-serif;
+			color: rgb(0, 0, 0);
+			text-align: center;
+		}
+		
+		form {
+			flex-grow: 1;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			margin: auto;
+			max-width: 600px;
+			width: 100%;
+		}
+		
+		h2 {
+			font-size: 3rem;
+			margin-bottom: 2rem;
+		}
+		
+		label {
+			font-size: 2rem;
+			display: block;
+			margin-bottom: 1rem;
+		}
+		
+		input[type="number"],
+		input[type="text"] {
+			font-size: 2rem;
+			padding: 1rem;
+			border-radius: 0.5rem;
+			border: none;
+			margin-bottom: 1rem;
+			width: 100%;
+			max-width: 400px;
+			box-sizing: border-box;
+		}
+		
+		input[type="submit"] {
+			font-size: 2rem;
+			padding: 1rem 2rem;
+			border-radius: 1rem;
+			border: none;
+			background-color: rgba(255, 255, 255, 0.7);
+			color: black;
+			margin-bottom: 1rem;
+			cursor: pointer;
+			transition: all 0.3s ease-in-out;
+		}
+		
+		input[type="submit"]:hover {
+			background-color: white;
+			transform: scale(1.1);
+		}
+	</style>
+</head>
+<body>
+	<form id="listing-form" action="https://www.paypal.com/us/business/accept-payments/checkout/?&utm_campaign=MDA_TM_PROSP_NA_US_EN_G_SEM_MERC_SU_Accept_Payments_Exact&utm_medium=Search&utm_source=GoogleSEM&utm_content=A_PP_US_EN_AA_SB_MS_PD_WB&utm_term=paypal_checkout_EX&kid=p74190872806&gclid=Cj0KCQiA6fafBhC1ARIsAIJjL8lw0Wz-fBHA4L5cs0PHKnQbtwwdZ781O4L6k5ss2vVqUWS59RCK2YAaAimEEALw_wcB&gclsrc=aw.ds" method="POST">
+		<h2>Let's list your place!</h2>
+		<div id="step1">
+			<label>Is this a rental or a sale?</label>
+			<input type="radio" name="type" value="rental" id="rental">
+			<label for="rental">Rental</label>
+			<input type="radio" name="type" value="sale" id="sale">
+			<label for="sale">Sale</label>
+			<input type="button" value="Next" onclick="nextStep(2)">
+		</div>
+		<div id="step2" style="display: none">
+			<label>How many bedrooms?</label>
+			<input type="number" name="bedrooms" min="0" id="bedrooms">
+			<input type="button" value="Previous" onclick="prevStep(1)">
+			<input type="button" value="Next" onclick="nextStep(3)">
+		</div>
+		<div id="step3" style="display: none">
+			<label>How many bathrooms?</label>
+			<input type="number" name="bathrooms" min="0" id="bathrooms">
+			<input type="button" value="Previous" onclick="prevStep(2)">
+			<input type="button" value="Next" onclick="nextStep(4)">
+		</div>
+		<div id="step4" style="display: none">
+            <label>How many square feet?</label>
+            <input type="number" name="square_feet" min="0" id="square-feet">
+            <input type="button" value="Previous" onclick="prevStep(3)">
+            <input type="button" value="Next" onclick="nextStep(5)">
+            </div>
+            <div id="step5" style="display: none">
+            <label>Price:</label>
+            <input type="number" name="price" min="0" id="price">
+            <input type="button" value="Previous" onclick="prevStep(4)">
+            <input type="button" value="Next" onclick="nextStep(6)">
+            </div>
+            <div id="step6" style="display: none">
+            <label>Upload Images:</label>
+            <input type="file" name="images" accept="image/*" multiple>
+            <input type="submit" value="Submit and Pay">
+            </div>
+            </form>
+            <script>
+            const form = document.querySelector("#listing-form");
+            const steps = form.querySelectorAll("[id^='step']");
+            function nextStep(step) {
+		steps[step - 2].style.display = "none";
+		steps[step - 1].style.display = "block";
+		window.scrollTo(0, 0);
+	}
+
+	function prevStep(step) {
+		steps[step - 1].style.display = "none";
+		steps[step - 2].style.display = "block";
+		window.scrollTo(0, 0);
+	}
+</script>
+</body>
+</html>

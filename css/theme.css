@@ -1306,6 +1306,23 @@ nav .cart .tag {
 /*!
 // 7. Headers, sliders, dividers
 // --------------------------------------------------*/
+
+.banner {
+  height: 100%; /* Set the height to a value that works for your design */
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-size: cover !important;
+  z-index: 0;
+  opacity: 10;
+  transition: opacity 0.5s ease;
+  -webkit-transition: opacity 0.5s ease;
+  -moz-transition: opacity 0.5s ease;
+
+}
+
 .background-image-holder,
 .foreground-image-holder {
   position: absolute;

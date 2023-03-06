@@ -105,6 +105,24 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         body{ font: 14px sans-serif; }
         .wrapper{ width: 360px; padding: 20px; }
     </style>
+     <style>
+    body {
+        font: 14px sans-serif;
+        background-image: url('https://images.pexels.com/photos/165505/pexels-photo-165505.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    .wrapper {
+        width: 360px;
+        margin: auto; /* this centers the element horizontally */
+        padding: 20px;
+        background-color: white;
+        border-radius: 10px;
+        margin-top: 50px;
+        box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+    }
+</style>
 </head>
 <body>
     <div class="wrapper">

@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
 $username = "root";
-$password = "W1ll1@m!!";
+$password = "";
 $dbname = "JustWaterfront";
 
 // Create connection

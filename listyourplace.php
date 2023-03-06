@@ -1,154 +1,18 @@
 <?php 
 
-$captchaSiteKey = '6LdNijMdAAAAANctKNaUespZ-uPdjxFAVXUr_VYo';
-$captchaSecretKey = '6LdNijMdAAAAAJ-h6RJEJSK3UGcQNzF9gzxMpepC';
+require_once('./core/boot.php');
+require_once('./core/functions.php');
 
-function curlRequest($url)
-{
-    $ch = curl_init();
-    $getUrl = $url;
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($ch, CURLOPT_URL, $getUrl);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 80);
+if (isset($_POST['other']) && $_POST['other'] !== '') {
+
+    // Google captcha code was here. Are we having a captcha on the page?
     
-    $response = curl_exec($ch);
-    return $response;
-    
-    curl_close($ch);
-    
-}
+    echo "<pre>";
+    print_r($_POST);
+    echo "</pre>";
+    die();
 
-require 'core/boot.php';
-
-if (isset($_POST['firstName'])) {
-
-	// Check captcha
-
-	$createGoogleUrl = 'https://www.google.com/recaptcha/api/siteverify?secret='.$captchaSecretKey.'&response='.$_POST['g-recaptcha-response'];
-	$verifyRecaptcha = curlRequest($createGoogleUrl);
-	$decodeGoogleResponse = json_decode($verifyRecaptcha,true);
-
-	if($decodeGoogleResponse['success'] == 0)
-	{
-		echo "Captcha incorrect";
-		die();
-	}
-
-
-
-	// Report filled in, make checks and add to database
-
-	// If not logged in, create user
-
-
-	
-
-	$newUser = 0;
-
-	if (!loggedIn()) {
-
-		// If email already registered
-		$check = $sql->sql()->prepare("SELECT * FROM users WHERE email = ?");
-		$check->execute([$_POST['user-email']]);
-		if ($check->rowCount()) {
-			// Already registered user, send only report activation letter
-			echo "Error - user already exists. Login before making a new report.";
-			die();
-		}
-
-		$generatedPassword = generateStrongPassword();
-
-		$user = $sql->sql()->prepare("INSERT INTO users (firstName, lastName, email, password) VALUES (:firstName, :lastName, :email, :password)");
-		$user->execute([
-		':firstName' => $_POST['user-firstname'],
-		':lastName' => $_POST['user-lastname'],
-		':email' => $_POST['user-email'],
-		':password' => password_hash($generatedPassword, PASSWORD_DEFAULT)
-		]);
-		
-		$_SESSION['user'] = $sql->lastId();
-		$newUser = 1;
-	}
-
-		$emailCode = md5($_POST['email']+time());
-
-		if(!isset($_POST['year'])){
-			$_POST['year'] = date("Y");
-		};
-
-		if(!isset($_POST['month'])){
-			$_POST['month'] = date("m");
-		};
-
-
-		$report = $sql->sql()->prepare("INSERT INTO reports (reporterID, firstName, lastName, email, store, phone, username, details, year, month, emailCode, address, second_address, city, state, zip, country) VALUES (:reporterID, :firstName, :lastName, :email, :store, :phone, :username, :details, :year, :month, :emailCode, :address, :second_address, :city, :state, :zip, :country)");
-		$report->execute([
-			'reporterID' => $_SESSION['user'],
-			'firstName' => $_POST['firstName'],
-			'lastName' => $_POST['lastName'],
-			'email' => $_POST['email'],
-			'store' => $_POST['store'],
-			'phone' => $_POST['phone'],
-			'username' => $_POST['username'],
-			'details' => $_POST['details'],
-			'year' => $_POST['year'],
-			'month' => $_POST['month'],
-			'emailCode' => $emailCode,
-			'address' => $_POST['address'],
-			'second_address' => $_POST['second_address'],
-			'city' => $_POST['city'],
-			'state' => $_POST['state'],
-			'zip' => $_POST['zip'],
-			'country' => $_POST['country']
-		]);
-
-		if ($newUser) {
-			$message =
-			"Dear {$_POST['user-firstname']} {$_POST['user-lastname']},<br>
-			<br>
-			Welcome to BadBuyer.com! Here's your account information:<br>
-			<br>
-			<b>E-mail: <i><a rel='nofollow' style='text-decoration:none; color:#333'>{$_POST['user-email']}</a></i></b><br>
-			<b>Password: <i>{$generatedPassword}</i></b><br>
-			<br>
-			To activate your report on {$_POST['firstName']} {$_POST['lastName']} you need to click the following link:<br><br>
-			<a href='http://badbuyer.com/activate.php?email={$_POST['user-email']}&code={$emailCode}'>badbuyer.com/activate.php?email={$_POST['user-email']}&code={$emailCode}</a><br>
-			<br>
-			If you desire we can send out a notification to your bad buyer for you, letting them know that they have been listed on our site and the only way possible for them to ever be removed from BadBuyer.com is if you decide as the listing party to remove them.
-			It's simple! Just login via the link below, with your new account, and click the mail icon next to your reported buyer.<br>
-			<br>
-			<a href='http://badbuyer.com/account.php'>badbuyer.com/account.php</a><br>
-			<br>
-			Once again - welcome!<br>
-			<br>
-			- The staff at BadBuyer.com
-			";
-
-			sendmail($_POST['user-firstname'] . ' ' . $_POST['user-lastname'], $_POST['user-email'], "Welcome to JustWaterfront.com", $message);
-		} else {
-			$message =
-			"Dear {$_POST['user-firstname']} {$_POST['user-lastname']},<br>
-			<br>
-			Thank you for submitting a listing to JustWaterfront.com!<br>
-			<br>
-			To activate your report, you need to click the following link:<br>
-			<a href='badbuyer.com/activate.php?email={$_POST['user-email']}&code={$emailCode}'>badbuyer.com/activate.php?email={$_POST['user-email']}&code={$emailCode}</a><br>
-			<br>
-			If you desire we can send out a notification to your bad buyer for you, letting them know that they have been listed on our site and the only way possible for them to ever be removed from BadBuyer.com is if you decide as the listing party to remove them.
-			It's simple! Just login via the link below, with your new account, and click the mail icon next to your reported buyer.<br>
-			<br>
-			<a href='http://badbuyer.com/account.php'>badbuyer.com/account.php</a><br>
-			<br>
-			- The staff at BadBuyer.com
-			";
-
-			sendmail($_POST['user-firstname'] . ' ' . $_POST['user-lastname'], $_POST['user-email'], "Your report is almost done!", $message);
-		}
-
-		header('Location: account.php?firstTime');
-		die();
+    // TODO: Submit to database
 
 }
 
@@ -509,65 +373,7 @@ if (isset($_POST['firstName'])) {
                                     </div>
                                 </div>
                                 </div>
-                                <div class="tab-pane" id="paymentportal">
-                                    <h4 class="info-text"> Payment Portal </h4>
-                                    <div class="row">
-                                      <div class="col-sm-10 col-sm-offset-1">
-                                        <!-- Replace "test" with your own sandbox Business account app client ID -->
-    <script src="https://www.paypal.com/sdk/js?client-id=AVjxIXPhpRb9KVFi9Fp8Sw2g1an_rBjtbMTn0J4bRHd2L1KtBgRs_2OVoChPy37AgXzSkEisEjXqmi_x&currency=USD"></script>
-    <!-- Set up a container element for the button -->
-    <div id="paypal-button-container"></div>
-    <script>
-      paypal.Buttons({
-        // Order is created on the server and the order id is returned
-        createOrder() {
-          return fetch("/my-server/create-paypal-order", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            // use the "body" param to optionally pass additional order information
-            // like product skus and quantities
-            body: JSON.stringify({
-              cart: [
-                {
-                  sku: "YOUR_PRODUCT_STOCK_KEEPING_UNIT",
-                  quantity: "YOUR_PRODUCT_QUANTITY",
-                },
-              ],
-            }),
-          })
-          .then((response) => response.json())
-          .then((order) => order.id);
-        },
-        // Finalize the transaction on the server after payer approval
-        onApprove(data) {
-          return fetch("/my-server/capture-paypal-order", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              orderID: data.orderID
-            })
-          })
-          .then((response) => response.json())
-          .then((orderData) => {
-            // Successful capture! For dev/demo purposes:
-            console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
-            const transaction = orderData.purchase_units[0].payments.captures[0];
-            alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
-            // When ready to go live, remove the alert and show a success message within this page. For example:
-            // const element = document.getElementById('paypal-button-container');
-            // element.innerHTML = '<h3>Thank you for your payment!</h3>';
-            // Or go to another URL:  window.location.href = 'thank_you.html';
-          });
-        }
-      }).render('#paypal-button-container');
-    </script>
-                                      </div>
-                                    </div>
-                                  </div>
+                                <!-- Checkout tab -->
                                   <div class="tab-pane" id="userinfo">
   <h4 class="info-text">User Info </h4>
   <div class="row">

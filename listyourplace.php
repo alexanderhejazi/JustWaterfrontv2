@@ -95,7 +95,7 @@ if (isset($_POST['other']) && $_POST['other'] !== '') {
                                     <div class="col-sm-5 col-sm-offset-1">
                                         <div class="form-group">
                                             <label>How Many Sq. Ft. ?</label>
-                                            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Ex. 4500?">
+                                            <input type="text" class="form-control" name="sq_ft" id="exampleInputEmail1" placeholder="Ex. 4500?">
                                         </div>
                                     </div>
                                     <div class="col-sm-5">
@@ -160,7 +160,7 @@ if (isset($_POST['other']) && $_POST['other'] !== '') {
                                         <div class="form-group">
                                             <label>What town is your listing in?</label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control">
+                                                <input type="text" name="town" class="form-control">
                                                 <span class="input-group-addon"></span>
                                             </div>
                                         </div>
@@ -169,7 +169,7 @@ if (isset($_POST['other']) && $_POST['other'] !== '') {
                                         <div class="form-group">
                                             <label>Listing Price</label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control">
+                                                <input type="text" name="price class="form-control">
                                                 <span class="input-group-addon">$</span>
                                             </div>
                                         </div>
@@ -184,19 +184,19 @@ if (isset($_POST['other']) && $_POST['other'] !== '') {
       <div class="col-sm-4">
         <div class="form-group">
           <label for="rental">First Name</label>
-          <input type="text" class="form-control" id="firstName" name="rental">
+          <input type="text" class="form-control" id="firstName" name="firstName">
         </div>
       </div>
       <div class="col-sm-4">
         <div class="form-group">
           <label for="sale">Last Name</label>
-          <input type="text" class="form-control" id="lastName" name="sale">
+          <input type="text" class="form-control" id="lastName" name="lastName">
         </div>
       </div>
       <div class="col-sm-4">
         <div class="form-group">
           <label for="other">Email Address</label>
-          <input type="text" class="form-control" id="email" name="other">
+          <input type="text" class="form-control" id="email" name="email">
         </div>
       </div>
     </div>
@@ -208,7 +208,7 @@ if (isset($_POST['other']) && $_POST['other'] !== '') {
                                     <div class="row">
                                       <div class="col-sm-10 col-sm-offset-1">
                                         <form action="" method="post" enctype="multipart/form-data">
-                                          <input type="file" name="photo[]" multiple>
+                                          <input type="file" name="photos" multiple>
                                           <br><br>
                                           <button class="btn btn-success btn-fill" type="submit" name="submit">Upload</button>
                                         </form>
@@ -222,7 +222,7 @@ if (isset($_POST['other']) && $_POST['other'] !== '') {
                                         <div class="col-sm-10 col-sm-offset-1">
                                             <div class="col-sm-4 col-sm-offset-2">
                                                 <div class="choice" data-toggle="wizard-radio" rel="tooltip" title="Select this option if this listing is a rental.">
-                                                    <input type="radio" name="job" value="1">
+                                                    <input type="radio" name="rental" value="1">
                                                     <div class="icon">
                                                         <i class="fa fa-life-ring"></i>
                                                     </div>
@@ -231,7 +231,7 @@ if (isset($_POST['other']) && $_POST['other'] !== '') {
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="choice" data-toggle="wizard-radio" rel="tooltip" title="Select this option if this listing is a sale.">
-                                                    <input type="radio" name="job" value="2">
+                                                    <input type="radio" name="sale" value="2">
                                                     <div class="icon">
                                                         <i class="fa fa-male"></i>
                                                         
@@ -250,7 +250,7 @@ if (isset($_POST['other']) && $_POST['other'] !== '') {
                                         <div class="col-sm-6 col-sm-offset-1">
                                             <div class="form-group">
                                                 <label>Listing Description</label>
-                                                <textarea class="form-control" placeholder="" rows="9">
+                                                <textarea class="form-control" name="listing_description" placeholder="Descripton..." rows="9">
                                                 </textarea>
                                             </div>
                                         </div>

@@ -28,6 +28,31 @@ if (isset($_POST['sq_ft']) && $_POST['sq_ft'] !== '') {
 
 ?>
 
+<?php 
+//users form 
+require_once('./core/boot.php');
+require_once('./core/functions.php');
+
+if (isset($_POST['username']) && isset($_POST['password'])) {
+
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+     
+
+     // Insert user information into the 'users' table
+     $insertStatement = $link->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
+     $insertStatement->bind_param('ss', $username, $hashed_password);
+     $insertStatement->execute();
+
+    // TODO: Redirect user somewhere or show a message
+
+}
+
+?>
+
       
       <!doctype html>
       <html lang="en">
@@ -204,14 +229,14 @@ if (isset($_POST['sq_ft']) && $_POST['sq_ft'] !== '') {
                               <div class="col-sm-10 col-sm-offset-1">
                                 <div class="col-sm-4">
                                   <div class="form-group">
-                                    <label for="rental">First Name</label>
-                                    <input type="text" class="form-control" id="firstName" name="firstName">
+                                    <label for="rental">Username</label>
+                                    <input type="text" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
                                   </div>
                                 </div>
                                 <div class="col-sm-4">
                                   <div class="form-group">
-                                    <label for="sale">Last Name</label>
-                                    <input type="text" class="form-control" id="lastName" name="lastName">
+                                    <label for="sale">password</label>
+                                    <input type="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $password; ?>">
                                   </div>
                                 </div>
                                 <div class="col-sm-4">

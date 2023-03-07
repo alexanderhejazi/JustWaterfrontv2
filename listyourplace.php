@@ -91,7 +91,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
                   <!--      Wizard container        -->
                   <div class="wizard-container">
                     <div class="card wizard-card" data-color="azzure" id="wizard">
-                      <form action="" method="post">
+                      <form action="welcome.php" method="post">
                         <!--        You can switch ' data-color="azzure" '  with one of the next bright colors: "blue", "green", "orange", "red"          -->
                         <div class="wizard-header">
                           <h3>
